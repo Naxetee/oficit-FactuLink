@@ -1,16 +1,17 @@
 import logging
 import logging.handlers
+from logging import LoggerAdapter
 import os
 from pathlib import Path
 import sys
 import json
 from queue import Queue
-from .log_levels import LogLevel
+from .log_levels import LogLevel, parse_level
 
 _LOG_QUEUE = Queue()
 _LISTENER = None
 
-def setup_logging_from_file(config_path: Path = "logger_config.json"):
+def setup_logging_from_file(config_path: Path):
     """
     Configura el sistema de logging a partir de un archivo JSON.
     Args:
@@ -22,12 +23,12 @@ def setup_logging_from_file(config_path: Path = "logger_config.json"):
     else:
         cfg = {}
     _setup_logging(
-        log_dir=cfg.get("log_dir", "logs"),
-        log_file=cfg.get("log_file", "factulink.log"),
-        level=cfg.get("level", os.getenv("LOG_LEVEL", "INFO")),
+        log_dir=cfg.get("log_dir"),
+        log_file=cfg.get("log_file"),
+        level=cfg.get("level"),
         json=cfg.get("json", False),
-        when=cfg.get("when", "midnight"),
-        backup_count=int(cfg.get("backup_count", 30)),
+        when=cfg.get("when"),
+        backup_count=int(cfg.get("backup_count")),
     )
 
 def _setup_logging(
@@ -53,7 +54,7 @@ def _setup_logging(
     logfile_path = os.path.join(log_dir, log_file)
 
     # Obtenemos el nivel de log
-    log_level = getattr(logging, level.name, logging.INFO)
+    log_level = getattr(logging, str(level), LogLevel.TRACE)
 
     # Configuramos el formateo del log
     if json:

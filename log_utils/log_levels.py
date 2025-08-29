@@ -5,12 +5,13 @@ class LogLevel(IntEnum):
     """
     Niveles de log personalizados.
     """
-    TRACE = 5      # más fino que DEBUG
-    DEBUG = logging.DEBUG         # 10
-    INFO = logging.INFO           # 20
-    WARNING = logging.WARNING     # 30
-    ERROR = logging.ERROR         # 40
-    CRITICAL = logging.CRITICAL   # 50
+    TRACE = 5
+    DEBUG = logging.DEBUG
+    INFO = logging.INFO
+    WARNING = logging.WARNING
+    ERROR = logging.ERROR
+    CRITICAL = logging.CRITICAL
+    FATAL = logging.FATAL
 
 # Registrar el nivel TRACE en logging (solo una vez)
 if not hasattr(logging, "TRACE"):
@@ -28,7 +29,7 @@ NAME_TO_LEVEL = {
     "WARNING": LogLevel.WARNING,
     "ERROR": LogLevel.ERROR,
     "CRITICAL": LogLevel.CRITICAL,
-    "FATAL": LogLevel.CRITICAL,
+    "FATAL": LogLevel.FATAL,
 }
 
 def parse_level(level_str: str | int | LogLevel, default: LogLevel = LogLevel.INFO) -> LogLevel:

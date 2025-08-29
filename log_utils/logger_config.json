@@ -1,7 +1,7 @@
 {
   "log_dir": "logs",
   "log_file": "factulink.log",
-  "level": "INFO",
+  "level": "DEBUG",
   "json": false,
   "when": "midnight",
   "backup_count": 30
